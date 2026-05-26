@@ -67,7 +67,7 @@ export default function Login() {
               name="email"
               onChange={handleChange}
               className="w-full mt-1 p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-emerald-400 outline-none"
-              placeholder="you@example.com"
+              placeholder="example@gmail.com"
             />
           </div>
 
@@ -79,7 +79,7 @@ export default function Login() {
               name="password"
               onChange={handleChange}
               className="w-full mt-1 p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-emerald-400 outline-none"
-              placeholder="••••••••"
+              placeholder="********"
             />
           </div>
 
