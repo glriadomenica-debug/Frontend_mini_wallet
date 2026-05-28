@@ -25,7 +25,7 @@ export default function Dashboard() {
     const userData = localStorage.getItem("user");
 
     if (!token) {
-      window.location.href = "/login";
+      window.location.href = "/";
       return;
     }
 

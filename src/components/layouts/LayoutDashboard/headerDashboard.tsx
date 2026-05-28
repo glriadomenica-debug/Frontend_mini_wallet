@@ -9,7 +9,7 @@ export default function HeaderDashboard() {
     localStorage.removeItem("user");
 
     // redirect login
-    navigate("/login");
+    navigate("/");
   };
 
   return (
