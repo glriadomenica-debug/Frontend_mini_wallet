@@ -104,7 +104,6 @@ export default function Transactions() {
       <ToastContainer position="top-right" />
 
       <div className="space-y-6">
-        {/* ================= HEADER ================= */}
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-start gap-3">
             <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#D9FF75] text-[#063B25]">
@@ -142,7 +141,6 @@ export default function Transactions() {
           <BackButton />
         </div>
 
-        {/* ================= SUMMARY ================= */}
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
           {/* Total Transactions */}
           <div className="rounded-3xl bg-white p-5 shadow-sm ring-1 ring-[#DDE8D8]">
@@ -184,7 +182,6 @@ export default function Transactions() {
             </div>
           </div>
 
-          {/* Money In */}
           <div className="rounded-3xl bg-white p-5 shadow-sm ring-1 ring-[#DDE8D8]">
             <div className="flex items-center justify-between">
               <div>
@@ -217,7 +214,6 @@ export default function Transactions() {
             </p>
           </div>
 
-          {/* Money Out */}
           <div className="rounded-3xl bg-white p-5 shadow-sm ring-1 ring-[#DDE8D8]">
             <div className="flex items-center justify-between">
               <div>
@@ -251,7 +247,6 @@ export default function Transactions() {
           </div>
         </div>
 
-        {/* ================= TRANSACTION TABLE ================= */}
         <div className="overflow-hidden rounded-3xl bg-white shadow-sm ring-1 ring-[#DDE8D8]">
           {/* Card Header */}
           <div className="flex flex-col gap-3 border-b border-[#E7EEE3] px-5 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-6">
@@ -274,7 +269,6 @@ export default function Transactions() {
             )}
           </div>
 
-          {/* Loading */}
           {loading ? (
             <div className="flex flex-col items-center justify-center px-6 py-16">
               <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#F4F7EF]">
@@ -340,7 +334,6 @@ export default function Transactions() {
               </p>
             </div>
           ) : (
-            /* Table */
             <div className="overflow-x-auto">
               <table className="w-full min-w-[1050px] text-sm">
                 <thead>
@@ -399,7 +392,6 @@ export default function Transactions() {
                           </div>
                         </td>
 
-                        {/* Type */}
                         <td className="px-6 py-5">
                           {isIncome ? (
                             <div className="inline-flex items-center gap-2 rounded-full bg-[#EAF8D8] px-3 py-1.5 text-xs font-semibold text-[#1B7A3D]">
@@ -442,7 +434,6 @@ export default function Transactions() {
                           )}
                         </td>
 
-                        {/* Amount */}
                         <td className="px-6 py-5 text-right">
                           <span
                             className={`font-bold ${
@@ -454,7 +445,6 @@ export default function Transactions() {
                           </span>
                         </td>
 
-                        {/* Description */}
                         <td className="max-w-[260px] px-6 py-5">
                           <p
                             className="truncate text-[#5E7066]"
@@ -464,7 +454,6 @@ export default function Transactions() {
                           </p>
                         </td>
 
-                        {/* Performed By */}
                         <td className="px-6 py-5">
                           <div className="flex items-center gap-2">
                             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#F4F7EF] text-xs font-bold text-[#07552F]">
@@ -479,7 +468,6 @@ export default function Transactions() {
                           </div>
                         </td>
 
-                        {/* Date */}
                         <td className="whitespace-nowrap px-6 py-5 text-[#718178]">
                           <div className="flex items-center gap-2">
                             <svg
