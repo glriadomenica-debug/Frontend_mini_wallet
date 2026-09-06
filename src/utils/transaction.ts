@@ -13,15 +13,11 @@
 
   export type TransactionDirection = "income" | "expense";
 
-  /**
-   * Determine whether transaction is Money In or Money Out.
-   */
+
   export const getTransactionDirection = (
     transaction: Transaction,
   ): TransactionDirection => {
-    /**
-     * 1. Backend direction has highest priority.
-     */
+    
     if (transaction.direction === "income") {
       return "income";
     }
@@ -34,9 +30,6 @@
       .toLowerCase()
       .trim();
 
-    /**
-     * 2. Known income types.
-     */
     const incomeTypes = [
       "balance_add",
       "topup",
@@ -48,9 +41,7 @@
       "credit",
     ];
 
-    /**
-     * 3. Known expense types.
-     */
+
     const expenseTypes = [
       "shopee_payment",
       "payment",
@@ -71,31 +62,13 @@
       return "expense";
     }
 
-    /**
-     * IMPORTANT:
-     *
-     * "transaction" is NOT automatically Money In.
-     *
-     * If amount is negative, it is Money Out.
-     */
     if (Number(transaction.amount) < 0) {
       return "expense";
     }
 
-    /**
-     * Positive amount without a known type
-     * is treated as Money In.
-     */
     return "income";
   };
 
-  /**
-   * Get absolute transaction amount.
-   *
-   * Example:
-   * -25000 -> 25000
-   * 25000  -> 25000
-   */
   export const getTransactionAmount = (
     transaction: Transaction,
   ): number => {
@@ -107,9 +80,7 @@
     return Math.abs(Number(amount) || 0);
   };
 
-  /**
-   * Get transaction title.
-   */
+
   export const getTransactionTitle = (
     transaction: Transaction,
   ): string => {
@@ -171,9 +142,7 @@
       : "Money Out";
   };
 
-  /**
-   * Get transaction description.
-   */
+
   export const getTransactionDescription = (
     transaction: Transaction,
   ): string => {
@@ -217,9 +186,6 @@
     return "Money spent";
   };
 
-  /**
-   * Get transaction date.
-   */
   export const getTransactionDate = (
     transaction: Transaction,
   ): string | undefined => {
@@ -230,9 +196,7 @@
     );
   };
 
-  /**
-   * Format transaction date.
-   */
+
   export const formatTransactionDate = (
     transaction: Transaction,
   ): string => {
@@ -257,17 +221,6 @@
     });
   };
 
-  /**
-   * Format Rupiah.
-   *
-   * Returns only the number.
-   *
-   * Example:
-   * 25000 -> 25.000,00
-   *
-   * So JSX can use:
-   * Rp {formatRupiah(amount)}
-   */
   export const formatRupiah = (
     amount: number,
   ): string => {
@@ -277,9 +230,6 @@
     }).format(Number(amount) || 0);
   };
 
-  /**
-   * Calculate total Money In.
-   */
   export const calculateTotalIncome = (
     transactions: Transaction[],
   ): number => {
@@ -297,9 +247,6 @@
     }, 0);
   };
 
-  /**
-   * Calculate total Money Out.
-   */
   export const calculateTotalExpense = (
     transactions: Transaction[],
   ): number => {
