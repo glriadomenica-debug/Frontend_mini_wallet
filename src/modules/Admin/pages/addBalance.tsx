@@ -84,7 +84,6 @@ export default function AddBalance() {
   return (
     <>
       <div className="max-w-3xl mx-auto">
-        {/* Page Header */}
         <div className="mb-6">
           <div className="flex items-center gap-3 mb-2">
             <div className="w-11 h-11 rounded-2xl bg-[#D9FF75] text-[#063B25] flex items-center justify-center shadow-sm">
@@ -115,9 +114,7 @@ export default function AddBalance() {
           </div>
         </div>
 
-        {/* Main Card */}
         <div className="bg-white rounded-3xl border border-[#DDE8D8] shadow-sm overflow-hidden">
-          {/* Card Header */}
           <div className="bg-gradient-to-r from-[#063B25] to-[#07552F] px-6 py-6 sm:px-8">
             <div className="flex items-center justify-between gap-4">
               <div>
@@ -148,9 +145,7 @@ export default function AddBalance() {
             </div>
           </div>
 
-          {/* Form */}
           <form onSubmit={handleSubmit} className="p-6 sm:p-8 space-y-7">
-            {/* Customer */}
             <div>
               <label
                 htmlFor="customer"
@@ -184,7 +179,6 @@ export default function AddBalance() {
               </p>
             </div>
 
-            {/* Amount */}
             <div>
               <label
                 htmlFor="amount"
@@ -232,7 +226,6 @@ export default function AddBalance() {
               </div>
             </div>
 
-            {/* Preview */}
             <div className="rounded-2xl bg-[#F4F7EF] border border-[#DDE8D8] p-4">
               <div className="flex items-center justify-between">
                 <div>
@@ -263,7 +256,6 @@ export default function AddBalance() {
               </div>
             </div>
 
-            {/* Buttons */}
             <div className="flex flex-col-reverse sm:flex-row gap-3 pt-1">
               <div className="w-full sm:w-auto">
                 <BackButton />
