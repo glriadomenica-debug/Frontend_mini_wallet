@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 
 export default function Login() {
@@ -38,7 +38,11 @@ export default function Login() {
       toast.success("Welcome back 👋");
 
       setTimeout(() => {
-        navigate("/dashboard");
+        if (user.role === "admin") {
+          navigate("/admin");
+        } else {
+          navigate("/dashboard");
+        }
       }, 1200);
     } catch (err: any) {
       toast.error(err?.response?.data?.message || "Login failed");
@@ -89,16 +93,6 @@ export default function Login() {
               {loading ? "Loading..." : "Login"}
             </button>
           </form>
-
-          <p className="text-center text-sm text-gray-500 mt-6">
-            Don’t have an account?{" "}
-            <Link
-              to="/register"
-              className="text-emerald-500 font-semibold hover:underline"
-            >
-              Register
-            </Link>
-          </p>
         </div>
 
         <ToastContainer />

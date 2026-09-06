@@ -1,12 +1,22 @@
 import { useState } from "react";
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
+import BackButton from "../../../components/common/BackButton";
+
+interface RegisterForm {
+  username: string;
+  email: string;
+  phone_number: string;
+  password: string;
+  password_confirmation: string;
+}
+
+interface ValidationErrors {
+  [key: string]: string[];
+}
 
 export default function Register() {
-  const navigate = useNavigate();
-
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<RegisterForm>({
     username: "",
     email: "",
     phone_number: "",
@@ -14,35 +24,48 @@ export default function Register() {
     password_confirmation: "",
   });
 
-  const [errors, setErrors] = useState<any>({});
-
+  const [errors, setErrors] = useState<ValidationErrors>({});
   const [loading, setLoading] = useState(false);
 
-  const handleChange = (e: any) => {
-    setForm({
-      ...form,
-      [e.target.name]: e.target.value,
-    });
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
 
-    setErrors({
-      ...errors,
-      [e.target.name]: "",
-    });
+    setForm((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+
+    setErrors((prev) => ({
+      ...prev,
+      [name]: [],
+    }));
   };
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     setLoading(true);
 
     try {
-      await axios.post("http://localhost:8000/api/auth/register", form);
+      const token = localStorage.getItem("token");
 
-      toast.success("Registration successful 🎉");
+      await axios.post("http://localhost:8000/api/admin/users", form, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-      setTimeout(() => {
-        navigate("/");
-      }, 1500);
+      toast.success("Customer created successfully 🎉");
+
+      setForm({
+        username: "",
+        email: "",
+        phone_number: "",
+        password: "",
+        password_confirmation: "",
+      });
+
+      setErrors({});
     } catch (err: any) {
       const validationErrors = err.response?.data?.message;
 
@@ -53,153 +76,199 @@ export default function Register() {
           toast.error(validationErrors[key][0]);
         });
       } else {
-        toast.error("Registration failed");
+        toast.error(err.response?.data?.message || "Failed to create customer");
       }
     } finally {
       setLoading(false);
     }
   };
 
+  const getInputClass = (field: string) => {
+    return `
+      w-full
+      px-4 py-3
+      rounded-xl
+      border
+      text-gray-700
+      outline-none
+      transition
+      ${
+        errors[field]?.length
+          ? "border-red-500 focus:ring-2 focus:ring-red-100"
+          : "border-gray-200 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100"
+      }
+    `;
+  };
+
   return (
     <>
-      <div className="flex items-center justify-center py-10">
-        <div className="w-full max-w-md bg-white p-8 rounded-2xl shadow-sm">
-          <h1 className="text-3xl font-bold text-gray-800">Create Account</h1>
+      <div className="max-w-xl mx-auto px-4 sm:px-0">
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+          {/* Header */}
+          <div className="px-6 py-5 md:px-8 border-b border-gray-100">
+            <div className="flex items-center justify-between gap-4">
+              <div>
+                <h1 className="text-2xl font-bold text-gray-800">
+                  Create Customer
+                </h1>
 
-          <p className="text-gray-500 mt-1 mb-6">
-            Register your Mini Wallet account
-          </p>
+                <p className="text-sm text-gray-500 mt-1">
+                  Create a new Mini Wallet customer account.
+                </p>
+              </div>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
+              <BackButton />
+            </div>
+          </div>
+
+          {/* Form */}
+          <form onSubmit={handleSubmit} className="p-6 md:p-8 space-y-5">
+            {/* Username */}
             <div>
-              <label className="text-sm text-gray-600">Username</label>
+              <label
+                htmlFor="username"
+                className="block text-sm font-semibold text-gray-700 mb-2"
+              >
+                Username
+              </label>
 
               <input
+                id="username"
                 type="text"
                 name="username"
+                value={form.username}
                 onChange={handleChange}
-                className={`w-full mt-1 p-3 rounded-xl border outline-none ${
-                  errors.username
-                    ? "border-red-500"
-                    : "border-gray-200 focus:ring-2 focus:ring-emerald-400"
-                }`}
                 placeholder="john_doe"
+                disabled={loading}
+                className={getInputClass("username")}
               />
 
-              {errors.username && (
+              {errors.username?.length > 0 && (
                 <p className="text-red-500 text-sm mt-1">
                   {errors.username[0]}
                 </p>
               )}
             </div>
 
+            {/* Email */}
             <div>
-              <label className="text-sm text-gray-600">Email</label>
+              <label
+                htmlFor="email"
+                className="block text-sm font-semibold text-gray-700 mb-2"
+              >
+                Email
+              </label>
 
               <input
+                id="email"
                 type="email"
                 name="email"
+                value={form.email}
                 onChange={handleChange}
-                className={`w-full mt-1 p-3 rounded-xl border outline-none ${
-                  errors.email
-                    ? "border-red-500"
-                    : "border-gray-200 focus:ring-2 focus:ring-emerald-400"
-                }`}
                 placeholder="example@gmail.com"
+                disabled={loading}
+                className={getInputClass("email")}
               />
 
-              {errors.email && (
+              {errors.email?.length > 0 && (
                 <p className="text-red-500 text-sm mt-1">{errors.email[0]}</p>
               )}
             </div>
 
+            {/* Phone Number */}
             <div>
-              <label className="text-sm text-gray-600">Phone Number</label>
+              <label
+                htmlFor="phone_number"
+                className="block text-sm font-semibold text-gray-700 mb-2"
+              >
+                Phone Number
+              </label>
 
               <input
+                id="phone_number"
                 type="text"
                 name="phone_number"
+                value={form.phone_number}
                 onChange={handleChange}
-                className={`w-full mt-1 p-3 rounded-xl border outline-none ${
-                  errors.phone_number
-                    ? "border-red-500"
-                    : "border-gray-200 focus:ring-2 focus:ring-emerald-400"
-                }`}
                 placeholder="08xxxxxxxxxx"
+                disabled={loading}
+                className={getInputClass("phone_number")}
               />
 
-              {errors.phone_number && (
+              {errors.phone_number?.length > 0 && (
                 <p className="text-red-500 text-sm mt-1">
                   {errors.phone_number[0]}
                 </p>
               )}
             </div>
 
+            {/* Password */}
             <div>
-              <label className="text-sm text-gray-600">Password</label>
+              <label
+                htmlFor="password"
+                className="block text-sm font-semibold text-gray-700 mb-2"
+              >
+                Password
+              </label>
 
               <input
+                id="password"
                 type="password"
                 name="password"
+                value={form.password}
                 onChange={handleChange}
-                className={`w-full mt-1 p-3 rounded-xl border outline-none ${
-                  errors.password
-                    ? "border-red-500"
-                    : "border-gray-200 focus:ring-2 focus:ring-emerald-400"
-                }`}
                 placeholder="********"
+                disabled={loading}
+                className={getInputClass("password")}
               />
 
-              {errors.password && (
+              {errors.password?.length > 0 && (
                 <p className="text-red-500 text-sm mt-1">
                   {errors.password[0]}
                 </p>
               )}
             </div>
 
+            {/* Confirm Password */}
             <div>
-              <label className="text-sm text-gray-600">Confirm Password</label>
+              <label
+                htmlFor="password_confirmation"
+                className="block text-sm font-semibold text-gray-700 mb-2"
+              >
+                Confirm Password
+              </label>
 
               <input
+                id="password_confirmation"
                 type="password"
                 name="password_confirmation"
+                value={form.password_confirmation}
                 onChange={handleChange}
-                className={`w-full mt-1 p-3 rounded-xl border outline-none ${
-                  errors.password_confirmation
-                    ? "border-red-500"
-                    : "border-gray-200 focus:ring-2 focus:ring-emerald-400"
-                }`}
                 placeholder="********"
+                disabled={loading}
+                className={getInputClass("password_confirmation")}
               />
 
-              {errors.password_confirmation && (
+              {errors.password_confirmation?.length > 0 && (
                 <p className="text-red-500 text-sm mt-1">
                   {errors.password_confirmation[0]}
                 </p>
               )}
             </div>
 
+            {/* Submit */}
             <button
+              type="submit"
               disabled={loading}
-              className="w-full bg-emerald-500 hover:bg-emerald-600 text-white p-3 rounded-xl transition"
+              className="w-full bg-emerald-500 hover:bg-emerald-600 disabled:bg-emerald-300 text-white py-3 rounded-xl font-semibold transition duration-200"
             >
-              {loading ? "Loading..." : "Register"}
+              {loading ? "Creating..." : "Create Customer"}
             </button>
           </form>
-
-          <p className="text-center text-sm text-gray-500 mt-6">
-            Already have an account?{" "}
-            <Link
-              to="/"
-              className="text-emerald-500 font-semibold hover:underline"
-            >
-              Login
-            </Link>
-          </p>
         </div>
-
-        <ToastContainer position="top-right" />
       </div>
+
+      <ToastContainer position="top-right" />
     </>
   );
 }
